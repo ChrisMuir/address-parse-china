@@ -25,7 +25,6 @@ func GeoLocate(locations []string) []GeoLocation {
 func getGeoLocation(location string) GeoLocation {
 	var geoInfo GeoLocation
 	geoInfo.Address = location
-	loc := stringToRuneArray(location)
 
 	// Get every possible substring of location string. Substring len 2 thru 14 (14 is the longest county)
 	// For each of the three substring matching steps below (province, city, county), follow this logic (using province
@@ -34,7 +33,7 @@ func getGeoLocation(location string) GeoLocation {
 	//     Look each province up in the location substring map
 	// else if number of provinces if greater than the number of location substrings, then:
 	//     Look each location substring up in the province map
-	subStrMap := getAllSubstrings(loc)
+	subStrMap := getAllSubstrings(location)
 
 	// Province:
 	matchingProvince := getProvinceMatches(subStrMap)
@@ -57,13 +56,14 @@ func getGeoLocation(location string) GeoLocation {
 }
 
 // Get every substring of the input location string, from len 2 thru len 14
-func getAllSubstrings(location []rune) map[string]int {
-	maxLen := getMaxSubStrLen(location)
+func getAllSubstrings(location string) map[string]int {
+	loc := stringToRuneArray(location)
+	maxLen := getMaxSubStrLen(loc)
 	subStrMap := make(map[string]int)
 	for i := 0; i < maxLen; i++ {
 		currSubStr := []rune{}
 		for j := i; j < maxLen; j++ {
-			currSubStr = append(currSubStr, location[j])
+			currSubStr = append(currSubStr, loc[j])
 			if len(currSubStr) < MIN_SUBSTRING_LEN {
 				continue
 			}
