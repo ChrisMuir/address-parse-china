@@ -24,6 +24,7 @@ func GeoLocate(locations []string) []GeoLocation {
 // three).
 func getGeoLocation(location string) GeoLocation {
 	var geoInfo GeoLocation
+	geoInfo.Address = location
 	loc := stringToRuneArray(location)
 
 	// Get every possible substring of location string. Substring len 2 thru 14 (14 is the longest county)
@@ -37,20 +38,20 @@ func getGeoLocation(location string) GeoLocation {
 
 	// Province:
 	matchingProvince := getProvinceMatches(subStrMap)
-	geoInfo.province = matchingProvince.ProvinceName
-	geoInfo.provinceCode = matchingProvince.ProvinceCode
+	geoInfo.Province = matchingProvince.ProvinceName
+	geoInfo.ProvinceCode = matchingProvince.ProvinceCode
 
 	// City
 	matchingCities := getCityMatches(subStrMap)
 	matchingCity := filterCityMatches(matchingCities, geoInfo)
-	geoInfo.city = matchingCity.CityName
-	geoInfo.cityCode = matchingCity.CityCode
+	geoInfo.City = matchingCity.CityName
+	geoInfo.CityCode = matchingCity.CityCode
 
 	// County
 	matchingCounties := getCountyMatches(subStrMap)
 	matchingCounty := filterCountyMatches(matchingCounties, geoInfo)
-	geoInfo.county = matchingCounty.CountyName
-	geoInfo.countyCode = matchingCounty.CountyCode
+	geoInfo.County = matchingCounty.CountyName
+	geoInfo.CountyCode = matchingCounty.CountyCode
 
 	return geoInfo
 }
@@ -182,15 +183,15 @@ func filterCityMatches(matches []city.City, geoInfo GeoLocation) city.City {
 	}
 
 	// If there is no matching province, return the first city substring match
-	if geoInfo.provinceCode == 0 {
+	if geoInfo.ProvinceCode == 0 {
 		return matches[0]
 	}
 
 	// If there is a matching province, then the first two digits of any city match must be equal to the province code, in
 	// order to be the right match.
-	if geoInfo.provinceCode > 0 {
+	if geoInfo.ProvinceCode > 0 {
 		for _, currCity := range matches {
-			if currCity.ProvinceCode == geoInfo.provinceCode {
+			if currCity.ProvinceCode == geoInfo.ProvinceCode {
 				return currCity
 			}
 		}
@@ -206,15 +207,15 @@ func filterCountyMatches(matches []county.County, geoInfo GeoLocation) county.Co
 	}
 
 	// If there are no matching province or city, return the first county substring match
-	if geoInfo.provinceCode == 0 && geoInfo.cityCode == 0 {
+	if geoInfo.ProvinceCode == 0 && geoInfo.CityCode == 0 {
 		return matches[0]
 	}
 
 	// If there is a matching city, then the first four digits of any county match must be equal to the city code, in
 	// order to be the right match.
-	if geoInfo.cityCode > 0 {
+	if geoInfo.CityCode > 0 {
 		for _, currCounty := range matches {
-			if currCounty.CityCode == geoInfo.cityCode {
+			if currCounty.CityCode == geoInfo.CityCode {
 				return currCounty
 			}
 		}
@@ -222,9 +223,9 @@ func filterCountyMatches(matches []county.County, geoInfo GeoLocation) county.Co
 
 	// If there is a matching province, then the first two digits of any county match must be equal to the province code, in
 	// order to be the right match.
-	if geoInfo.provinceCode > 0 {
+	if geoInfo.ProvinceCode > 0 {
 		for _, currCounty := range matches {
-			if currCounty.ProvinceCode == geoInfo.provinceCode {
+			if currCounty.ProvinceCode == geoInfo.ProvinceCode {
 				return currCounty
 			}
 		}
