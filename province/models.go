@@ -5,10 +5,10 @@ type Province struct {
 	ProvinceCode int
 }
 
-var NameMap = makeProvinceMap()
+var NameMap = makeProvinceNameMap()
 var CodeMap = makeProvinceCodeMap()
 
-func makeProvinceMap() map[string]int {
+func makeProvinceNameMap() map[string]int {
 	provinceMap := make(map[string]int)
 	for _, prov := range Provinces {
 		provinceMap[prov.ProvinceName] = prov.ProvinceCode
