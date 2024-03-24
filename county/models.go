@@ -11,13 +11,13 @@ var NameMap = makeCountyMap()
 
 func makeCountyMap() map[string][]County {
 	countyMap := make(map[string][]County)
-	for _, currCounty := range counties {
+	for _, currCounty := range Counties {
 		countyMap[currCounty.CountyName] = append(countyMap[currCounty.CountyName], currCounty)
 	}
 	return countyMap
 }
 
-var counties = []County{
+var Counties = []County{
 	{
 		"东城",
 		110101,
