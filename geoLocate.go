@@ -37,18 +37,18 @@ func getGeoLocation(location string) models.GeoLocation {
 	//     Look each location substring up in the province map
 	subStrMap := substring.GetAllSubstrings(location)
 
-	// Province substring matches
+	// Province substring match
 	matchingProvince := match.Province(subStrMap)
 	geoInfo.Province = matchingProvince.ProvinceName
 	geoInfo.ProvinceCode = matchingProvince.ProvinceCode
 
-	// City substring matches
+	// City substring match
 	matchingCities := match.Cities(subStrMap)
 	matchingCity := filter.Cities(matchingCities, geoInfo)
 	geoInfo.City = matchingCity.CityName
 	geoInfo.CityCode = matchingCity.CityCode
 
-	// County substring matches
+	// County substring match
 	matchingCounties := match.Counties(subStrMap)
 	matchingCounty := filter.Counties(matchingCounties, geoInfo)
 	geoInfo.County = matchingCounty.CountyName
@@ -60,14 +60,17 @@ func getGeoLocation(location string) models.GeoLocation {
 	return geoInfo
 }
 
+// GetProvinceData exposes the internal package Province data
 func GetProvinceData() []province.Province {
 	return province.Provinces
 }
 
+// GetCityData exposes the internal package City data
 func GetCityData() []city.City {
 	return city.Cities
 }
 
+// GetCountyData exposes the internal package County data
 func GetCountyData() []county.County {
 	return county.Counties
 }
