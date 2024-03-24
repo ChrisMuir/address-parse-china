@@ -6,12 +6,21 @@ type City struct {
 	ProvinceCode int
 }
 
-var Map = makeCityMap()
+var NameMap = makeCityNameMap()
+var CodeMap = makeCityCodeMap()
 
-func makeCityMap() map[string][]City {
+func makeCityNameMap() map[string][]City {
 	cityMap := make(map[string][]City)
 	for _, currCity := range Cities {
 		cityMap[currCity.CityName] = append(cityMap[currCity.CityName], currCity)
+	}
+	return cityMap
+}
+
+func makeCityCodeMap() map[int]City {
+	cityMap := make(map[int]City)
+	for _, currCity := range Cities {
+		cityMap[currCity.CityCode] = currCity
 	}
 	return cityMap
 }

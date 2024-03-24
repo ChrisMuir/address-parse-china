@@ -5,7 +5,8 @@ type Province struct {
 	ProvinceCode int
 }
 
-var Map = makeProvinceMap()
+var NameMap = makeProvinceMap()
+var CodeMap = makeProvinceCodeMap()
 
 func makeProvinceMap() map[string]int {
 	provinceMap := make(map[string]int)
@@ -13,6 +14,14 @@ func makeProvinceMap() map[string]int {
 		provinceMap[prov.ProvinceName] = prov.ProvinceCode
 	}
 	return provinceMap
+}
+
+func makeProvinceCodeMap() map[int]Province {
+	provMap := make(map[int]Province)
+	for _, currProv := range Provinces {
+		provMap[currProv.ProvinceCode] = currProv
+	}
+	return provMap
 }
 
 var Provinces = []Province{

@@ -35,33 +35,39 @@ func getGeoLocation(location string) GeoLocation {
 	//     Look each location substring up in the province map
 	subStrMap := getAllSubstrings(location)
 
-	// Province:
+	// Province substring matches
 	matchingProvince := getProvinceMatches(subStrMap)
 	geoInfo.Province = matchingProvince.ProvinceName
 	geoInfo.ProvinceCode = matchingProvince.ProvinceCode
 
-	// City
+	// City substring matches
 	matchingCities := getCityMatches(subStrMap)
 	matchingCity := filterCityMatches(matchingCities, geoInfo)
 	geoInfo.City = matchingCity.CityName
 	geoInfo.CityCode = matchingCity.CityCode
 
-	// County
+	// County substring matches
 	matchingCounties := getCountyMatches(subStrMap)
 	matchingCounty := filterCountyMatches(matchingCounties, geoInfo)
 	geoInfo.County = matchingCounty.CountyName
 	geoInfo.CountyCode = matchingCounty.CountyCode
 
+	// Fill in missing fields using geocode interpolation
+	geoInfo = interpolateMissingValues(geoInfo, matchingCity, matchingCounty)
+
 	return geoInfo
 }
 
 // Get every substring of the input location string, from len 2 thru len 14
+// Returns a map, in which keys are substrings, values are the starting index of the substring within the input string
+// Example input: "这是一个测试"
+// Output: map[这是:0 这是一:0 这是一个:0 这是一个测:0 这是一个测试:0 是一:1 是一个:1 是一个测:1 是一个测试:1 一个:2 一个测:2 一个测试:2 个测:3 个测试:3 测试:4]
 func getAllSubstrings(location string) map[string]int {
-	loc := stringToRuneArray(location)
+	loc := []rune(location)
 	maxLen := getMaxSubStrLen(loc)
 	subStrMap := make(map[string]int)
 	for i := 0; i < maxLen; i++ {
-		currSubStr := []rune{}
+		var currSubStr []rune
 		for j := i; j < maxLen; j++ {
 			currSubStr = append(currSubStr, loc[j])
 			if len(currSubStr) < MIN_SUBSTRING_LEN {
@@ -83,15 +89,11 @@ func getMaxSubStrLen(location []rune) int {
 	return maxLen
 }
 
-func stringToRuneArray(s string) []rune {
-	return []rune(s)
-}
-
 func getProvinceMatches(subStrMap map[string]int) province.Province {
 	var match province.Province
 	var lowestSubStrIdx = 9999
-	if len(subStrMap) > len(province.Map) {
-		for currProv, currProvCode := range province.Map {
+	if len(subStrMap) > len(province.NameMap) {
+		for currProv, currProvCode := range province.NameMap {
 			subStrIdx, ok := subStrMap[currProv]
 			if !ok {
 				continue
@@ -104,7 +106,7 @@ func getProvinceMatches(subStrMap map[string]int) province.Province {
 		}
 	} else {
 		for currSubStr, currSubStrIdx := range subStrMap {
-			provCode, ok := province.Map[currSubStr]
+			provCode, ok := province.NameMap[currSubStr]
 			if !ok {
 				continue
 			}
@@ -121,8 +123,8 @@ func getProvinceMatches(subStrMap map[string]int) province.Province {
 func getCityMatches(subStrMap map[string]int) []city.City {
 	var matches []city.City
 	var lowestSubStrIdx = 9999
-	if len(subStrMap) > len(city.Map) {
-		for currCitySubStr, currCities := range city.Map {
+	if len(subStrMap) > len(city.NameMap) {
+		for currCitySubStr, currCities := range city.NameMap {
 			subStrIdx, ok := subStrMap[currCitySubStr]
 			if !ok {
 				continue
@@ -134,7 +136,7 @@ func getCityMatches(subStrMap map[string]int) []city.City {
 		}
 	} else {
 		for currSubStr, currSubStrIdx := range subStrMap {
-			cities, ok := city.Map[currSubStr]
+			cities, ok := city.NameMap[currSubStr]
 			if !ok {
 				continue
 			}
@@ -150,8 +152,8 @@ func getCityMatches(subStrMap map[string]int) []city.City {
 func getCountyMatches(subStrMap map[string]int) []county.County {
 	var matches []county.County
 	var lowestSubStrIdx = 9999
-	if len(subStrMap) > len(county.Map) {
-		for currCountySubStr, currCounties := range county.Map {
+	if len(subStrMap) > len(county.NameMap) {
+		for currCountySubStr, currCounties := range county.NameMap {
 			subStrIdx, ok := subStrMap[currCountySubStr]
 			if !ok {
 				continue
@@ -163,7 +165,7 @@ func getCountyMatches(subStrMap map[string]int) []county.County {
 		}
 	} else {
 		for currSubStr, currSubStrIdx := range subStrMap {
-			counties, ok := county.Map[currSubStr]
+			counties, ok := county.NameMap[currSubStr]
 			if !ok {
 				continue
 			}
@@ -232,4 +234,24 @@ func filterCountyMatches(matches []county.County, geoInfo GeoLocation) county.Co
 	}
 
 	return county.County{}
+}
+
+// Uses child matches to infer parent values
+func interpolateMissingValues(geoInfo GeoLocation, cityMatch city.City, countyMatch county.County) GeoLocation {
+	// If county was matched and city was not matched, infer city from county match
+	if geoInfo.CityCode == 0 && geoInfo.CountyCode > 0 {
+		geoInfo.CityCode = countyMatch.CityCode
+		geoInfo.City = city.CodeMap[countyMatch.CityCode].CityName
+	}
+
+	// If city or county was matched and province was not matched, infer province from city or county match
+	if geoInfo.ProvinceCode == 0 && geoInfo.CityCode > 0 {
+		if countyMatch.ProvinceCode > 0 {
+			geoInfo.ProvinceCode = countyMatch.ProvinceCode
+		} else {
+			geoInfo.ProvinceCode = cityMatch.ProvinceCode
+		}
+		geoInfo.Province = province.CodeMap[geoInfo.ProvinceCode].ProvinceName
+	}
+	return geoInfo
 }
