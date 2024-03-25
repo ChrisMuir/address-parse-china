@@ -255,3 +255,29 @@ func main() {
   }
 ]
 ```
+
+## Benchmark
+
+```go
+package address_parse_china
+
+import "testing"
+
+func BenchmarkGeoLocate(b *testing.B) {
+	locs := []string{
+		"大连市甘井子区南关岭街道姚工街101号",
+	}
+	for i := 0; i < b.N; i++ {
+		GeoLocate(locs)
+	}
+}
+```
+```bash
+~/address-parse-china % go test -bench=.
+goos: darwin
+goarch: arm64
+pkg: github.com/ChrisMuir/address-parse-china
+BenchmarkGeoLocate-8       40614             26821 ns/op
+PASS
+ok      github.com/ChrisMuir/address-parse-china        1.614s
+```

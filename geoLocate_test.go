@@ -89,6 +89,15 @@ func TestGeoLocate(t *testing.T) {
 	}
 }
 
+func BenchmarkGeoLocate(b *testing.B) {
+	locs := []string{
+		"大连市甘井子区南关岭街道姚工街101号",
+	}
+	for i := 0; i < b.N; i++ {
+		GeoLocate(locs)
+	}
+}
+
 func TestGetProvinceData(t *testing.T) {
 	resp := GetProvinceData()
 
