@@ -1,12 +1,13 @@
 package address_parse_china
 
 import (
+	"reflect"
+	"testing"
+
 	"github.com/ChrisMuir/address-parse-china/city"
 	"github.com/ChrisMuir/address-parse-china/county"
 	"github.com/ChrisMuir/address-parse-china/models"
 	"github.com/ChrisMuir/address-parse-china/province"
-	"reflect"
-	"testing"
 )
 
 func TestGeoLocate(t *testing.T) {
@@ -14,6 +15,20 @@ func TestGeoLocate(t *testing.T) {
 		input    []string
 		expected []models.GeoLocation
 	}{
+		{
+			input: []string{"这是一个包含中文商务地址的段落：尊敬的客户：感谢您对我公司的关注与支持。我们的办公地址位于中国北京市朝阳区力鸿花园1号楼18A。如果您需要邮寄信函或包裹，请使用邮政编码100080。我们期待您的来访，并希望能为您提供优质的服务。此致，敬礼！"},
+			expected: []models.GeoLocation{
+				{
+					Address:      "这是一个包含中文商务地址的段落：尊敬的客户：感谢您对我公司的关注与支持。我们的办公地址位于中国北京市朝阳区力鸿花园1号楼18A。如果您需要邮寄信函或包裹，请使用邮政编码100080。我们期待您的来访，并希望能为您提供优质的服务。此致，敬礼！",
+					Province:     "北京",
+					ProvinceCode: 11,
+					City:         "辖区",
+					CityCode:     1101,
+					County:       "朝阳",
+					CountyCode:   110105,
+				},
+			},
+		},
 		{
 			input: []string{"大连市甘井子区南关岭街道姚工街101号"},
 			expected: []models.GeoLocation{
@@ -92,6 +107,7 @@ func TestGeoLocate(t *testing.T) {
 func BenchmarkGeoLocate(b *testing.B) {
 	locs := []string{
 		"大连市甘井子区南关岭街道姚工街101号",
+		// "这是一个包含中文商务地址的段落：尊敬的客户：感谢您对我公司的关注与支持。我们的办公地址位于中国北京市朝阳区力鸿花园1号楼18A。如果您需要邮寄信函或包裹，请使用邮政编码100080。我们期待您的来访，并希望能为您提供优质的服务。此致，敬礼！",
 	}
 	for i := 0; i < b.N; i++ {
 		GeoLocate(locs)
