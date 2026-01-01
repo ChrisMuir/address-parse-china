@@ -9,7 +9,7 @@ var NameMap = makeProvinceNameMap()
 var CodeMap = makeProvinceCodeMap()
 
 func makeProvinceNameMap() map[string]int {
-	provinceMap := make(map[string]int)
+	provinceMap := make(map[string]int, len(Provinces))
 	for _, prov := range Provinces {
 		provinceMap[prov.ProvinceName] = prov.ProvinceCode
 	}
@@ -17,7 +17,7 @@ func makeProvinceNameMap() map[string]int {
 }
 
 func makeProvinceCodeMap() map[int]Province {
-	provMap := make(map[int]Province)
+	provMap := make(map[int]Province, len(Provinces))
 	for _, currProv := range Provinces {
 		provMap[currProv.ProvinceCode] = currProv
 	}

@@ -10,7 +10,7 @@ type County struct {
 var NameMap = makeCountyMap()
 
 func makeCountyMap() map[string][]County {
-	countyMap := make(map[string][]County)
+	countyMap := make(map[string][]County, len(Counties))
 	for _, currCounty := range Counties {
 		countyMap[currCounty.CountyName] = append(countyMap[currCounty.CountyName], currCounty)
 	}

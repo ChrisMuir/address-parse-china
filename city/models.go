@@ -10,7 +10,7 @@ var NameMap = makeCityNameMap()
 var CodeMap = makeCityCodeMap()
 
 func makeCityNameMap() map[string][]City {
-	cityMap := make(map[string][]City)
+	cityMap := make(map[string][]City, len(Cities))
 	for _, currCity := range Cities {
 		cityMap[currCity.CityName] = append(cityMap[currCity.CityName], currCity)
 	}
@@ -18,7 +18,7 @@ func makeCityNameMap() map[string][]City {
 }
 
 func makeCityCodeMap() map[int]City {
-	cityMap := make(map[int]City)
+	cityMap := make(map[int]City, len(Cities))
 	for _, currCity := range Cities {
 		cityMap[currCity.CityCode] = currCity
 	}
