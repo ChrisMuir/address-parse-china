@@ -1,6 +1,8 @@
 package match
 
 import (
+	"math"
+
 	"github.com/ChrisMuir/address-parse-china/city"
 	"github.com/ChrisMuir/address-parse-china/county"
 	"github.com/ChrisMuir/address-parse-china/province"
@@ -8,7 +10,7 @@ import (
 
 func Province(subStrMap map[string]int) province.Province {
 	var match province.Province
-	var lowestSubStrIdx = 9999
+	var lowestSubStrIdx = math.MaxInt
 	if len(subStrMap) > len(province.NameMap) {
 		for currProv, currProvCode := range province.NameMap {
 			subStrIdx, ok := subStrMap[currProv]
@@ -39,7 +41,7 @@ func Province(subStrMap map[string]int) province.Province {
 
 func Cities(subStrMap map[string]int) []city.City {
 	var matches []city.City
-	var lowestSubStrIdx = 9999
+	var lowestSubStrIdx = math.MaxInt
 	if len(subStrMap) > len(city.NameMap) {
 		for currCitySubStr, currCities := range city.NameMap {
 			subStrIdx, ok := subStrMap[currCitySubStr]
@@ -68,7 +70,7 @@ func Cities(subStrMap map[string]int) []city.City {
 
 func Counties(subStrMap map[string]int) []county.County {
 	var matches []county.County
-	var lowestSubStrIdx = 9999
+	var lowestSubStrIdx = math.MaxInt
 	if len(subStrMap) > len(county.NameMap) {
 		for currCountySubStr, currCounties := range county.NameMap {
 			subStrIdx, ok := subStrMap[currCountySubStr]
