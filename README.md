@@ -42,6 +42,8 @@ func main() {
 		"徐州雅莲连锁超市有限公司",
 		"四川省南充市阆中市公园路63号",
 		"同德县鲜肉蔬菜配送行",
+		"这是一个包含中文商务地址的段落：尊敬的客户：感谢您对我公司的关注与支持。我们的办公地址位于中国北京市朝阳区力鸿花园1号楼18A。如果您需要邮寄信函或包裹，请使用邮政编码100080。我们期待您的来访，并希望能为您提供优质的服务。此致，敬礼！",
+		"中国北京市朝阳区力鸿花园1号楼18A",
 	}
 	geoLocs := apc.GeoLocate(locs)
 	geoLocsJson, _ := json.Marshal(geoLocs)
@@ -51,60 +53,78 @@ func main() {
 
 ```json
 [
-  {
-    "Address": "大连市甘井子区南关岭街道姚工街101号",
-    "Province": "辽宁",
-    "ProvinceCode": 21,
-    "City": "大连",
-    "CityCode": 2102,
-    "County": "甘井子",
-    "CountyCode": 210211
-  },
-  {
-    "Address": "浙江省杭州市余杭区径山镇小古城村",
-    "Province": "浙江",
-    "ProvinceCode": 33,
-    "City": "杭州",
-    "CityCode": 3301,
-    "County": "余杭",
-    "CountyCode": 330110
-  },
-  {
-    "Address": "大连御洋食品有限公司",
-    "Province": "辽宁",
-    "ProvinceCode": 21,
-    "City": "大连",
-    "CityCode": 2102,
-    "County": "",
-    "CountyCode": 0
-  },
-  {
-    "Address": "徐州雅莲连锁超市有限公司",
-    "Province": "江苏",
-    "ProvinceCode": 32,
-    "City": "徐州",
-    "CityCode": 3203,
-    "County": "",
-    "CountyCode": 0
-  },
-  {
-    "Address": "四川省南充市阆中市公园路63号",
-    "Province": "四川",
-    "ProvinceCode": 51,
-    "City": "南充",
-    "CityCode": 5113,
-    "County": "阆中",
-    "CountyCode": 511381
-  },
-  {
-    "Address": "同德县鲜肉蔬菜配送行",
-    "Province": "青海",
-    "ProvinceCode": 63,
-    "City": "海南藏族",
-    "CityCode": 6325,
-    "County": "同德",
-    "CountyCode": 632522
-  }
+	{
+		"Address": "大连市甘井子区南关岭街道姚工街101号",
+		"Province": "辽宁",
+		"ProvinceCode": 21,
+		"City": "大连",
+		"CityCode": 2102,
+		"County": "甘井子",
+		"CountyCode": 210211
+	},
+	{
+		"Address": "浙江省杭州市余杭区径山镇小古城村",
+		"Province": "浙江",
+		"ProvinceCode": 33,
+		"City": "杭州",
+		"CityCode": 3301,
+		"County": "余杭",
+		"CountyCode": 330110
+	},
+	{
+		"Address": "大连御洋食品有限公司",
+		"Province": "辽宁",
+		"ProvinceCode": 21,
+		"City": "大连",
+		"CityCode": 2102,
+		"County": "",
+		"CountyCode": 0
+	},
+	{
+		"Address": "徐州雅莲连锁超市有限公司",
+		"Province": "江苏",
+		"ProvinceCode": 32,
+		"City": "徐州",
+		"CityCode": 3203,
+		"County": "",
+		"CountyCode": 0
+	},
+	{
+		"Address": "四川省南充市阆中市公园路63号",
+		"Province": "四川",
+		"ProvinceCode": 51,
+		"City": "南充",
+		"CityCode": 5113,
+		"County": "阆中",
+		"CountyCode": 511381
+	},
+	{
+		"Address": "同德县鲜肉蔬菜配送行",
+		"Province": "青海",
+		"ProvinceCode": 63,
+		"City": "海南藏族",
+		"CityCode": 6325,
+		"County": "同德",
+		"CountyCode": 632522
+	},
+	{
+		"Address": "这是一个包含中文商务地址的段落：尊敬的客户：感谢您对我公司的关注与支持。我们的办公地址位于中国北京市朝阳区力鸿花园1号楼18A。如果您需要邮寄信函或包裹，请使用邮政编码100080。我们期待您的来访，并希望能为您提供优质的服务。此致，敬礼！",
+		"Province": "北京",
+		"ProvinceCode": 11,
+		"City": "辖区",
+		"CityCode": 1101,
+		"County": "朝阳",
+		"CountyCode": 110105
+	},
+	{
+		"Address": "中国北京市朝阳区力鸿花园1号楼18A",
+		"Province": "北京",
+		"ProvinceCode": 11,
+		"City": "辖区",
+		"CityCode": 1101,
+		"County": "朝阳",
+		"CountyCode": 110105
+	}
 ]
 ```
 
@@ -266,6 +286,7 @@ import "testing"
 func BenchmarkGeoLocate(b *testing.B) {
 	locs := []string{
 		"大连市甘井子区南关岭街道姚工街101号",
+		"这是一个包含中文商务地址的段落：尊敬的客户：感谢您对我公司的关注与支持。我们的办公地址位于中国北京市朝阳区力鸿花园1号楼18A。如果您需要邮寄信函或包裹，请使用邮政编码100080。我们期待您的来访，并希望能为您提供优质的服务。此致，敬礼！",
 	}
 	for i := 0; i < b.N; i++ {
 		GeoLocate(locs)
@@ -277,7 +298,8 @@ func BenchmarkGeoLocate(b *testing.B) {
 goos: darwin
 goarch: arm64
 pkg: github.com/ChrisMuir/address-parse-china
-BenchmarkGeoLocate-8       40614             26821 ns/op
+cpu: Apple M1
+BenchmarkGeoLocate-8        6596            177872 ns/op
 PASS
-ok      github.com/ChrisMuir/address-parse-china        1.614s
+ok      github.com/ChrisMuir/address-parse-china        2.153s
 ```
