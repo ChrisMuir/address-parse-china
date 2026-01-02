@@ -94,6 +94,20 @@ func TestGeoLocate(t *testing.T) {
 				},
 			},
 		},
+		{
+			input: []string{""},
+			expected: []models.GeoLocation{
+				{
+					Address:      "",
+					Province:     "",
+					ProvinceCode: 0,
+					City:         "",
+					CityCode:     0,
+					County:       "",
+					CountyCode:   0,
+				},
+			},
+		},
 	}
 
 	for _, tt := range tests {
@@ -107,7 +121,7 @@ func TestGeoLocate(t *testing.T) {
 func BenchmarkGeoLocate(b *testing.B) {
 	locs := []string{
 		"大连市甘井子区南关岭街道姚工街101号",
-		// "这是一个包含中文商务地址的段落：尊敬的客户：感谢您对我公司的关注与支持。我们的办公地址位于中国北京市朝阳区力鸿花园1号楼18A。如果您需要邮寄信函或包裹，请使用邮政编码100080。我们期待您的来访，并希望能为您提供优质的服务。此致，敬礼！",
+		"这是一个包含中文商务地址的段落：尊敬的客户：感谢您对我公司的关注与支持。我们的办公地址位于中国北京市朝阳区力鸿花园1号楼18A。如果您需要邮寄信函或包裹，请使用邮政编码100080。我们期待您的来访，并希望能为您提供优质的服务。此致，敬礼！",
 	}
 	for i := 0; i < b.N; i++ {
 		GeoLocate(locs)
@@ -125,8 +139,8 @@ func TestGetProvinceData(t *testing.T) {
 
 	// Check one expected value
 	expectedVal := province.Province{
-		"上海",
-		31,
+		ProvinceName: "上海",
+		ProvinceCode: 31,
 	}
 	seen := false
 	for _, currProv := range resp {

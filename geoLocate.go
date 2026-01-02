@@ -26,6 +26,11 @@ func GeoLocate(locations []string) []models.GeoLocation {
 // three).
 func getGeoLocation(location string) models.GeoLocation {
 	var geoInfo models.GeoLocation
+
+	if location == "" {
+		return geoInfo
+	}
+
 	geoInfo.Address = location
 
 	// Get every possible substring of location string. Substring len 2 thru 14 (14 is the longest county)
