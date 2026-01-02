@@ -165,9 +165,9 @@ func TestGetCityData(t *testing.T) {
 
 	// Check one expected value
 	expectedVal := city.City{
-		"晋城",
-		1405,
-		14,
+		CityName:     "晋城",
+		CityCode:     1405,
+		ProvinceCode: 14,
 	}
 	seen := false
 	for _, currCity := range resp {
@@ -194,10 +194,10 @@ func TestGetCountyDataData(t *testing.T) {
 
 	// Check one expected value
 	expectedVal := county.County{
-		"河北唐山海港经济开发",
-		130274,
-		1302,
-		13,
+		CountyName:   "河北唐山海港经济开发",
+		CountyCode:   130274,
+		CityCode:     1302,
+		ProvinceCode: 13,
 	}
 	seen := false
 	for _, currCounty := range resp {
