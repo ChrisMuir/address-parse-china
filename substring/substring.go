@@ -1,7 +1,7 @@
 package substring
 
 const MIN_SUBSTRING_LEN = 2
-const MAX_SUBSTRING_LEN = 15
+const MAX_SUBSTRING_LEN = 14
 
 // Get every substring of the input location string, from len 2 thru len 14
 // Returns a map, in which keys are substrings, values are the starting index of the substring within the input string
@@ -42,7 +42,8 @@ func GetAllSubstrings(location string) map[string]int {
 	collisions := make(map[string]int)
 
 	// Sliding pass per substring rune-length L
-	for L := MIN_SUBSTRING_LEN; L <= maxRune; L++ {
+	subStringLengths := []int{2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 14}
+	for _, L := range subStringLengths {
 		for i := 0; i <= runeLen-L; i++ {
 			startByte := offsets[i]
 			endByte := offsets[i+L]

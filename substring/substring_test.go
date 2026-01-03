@@ -48,6 +48,8 @@ func TestGetAllSubstrings_MaxLenAndIndices(t *testing.T) {
 	s := "abcdefghijklmnopqrst" // 20 runes
 	runes := []rune(s)
 	m := GetAllSubstrings(s)
+	maxSubStringSeen := -1
+	maxSubString := "blah"
 
 	for k, idx := range m {
 		l := len([]rune(k))
@@ -63,5 +65,12 @@ func TestGetAllSubstrings_MaxLenAndIndices(t *testing.T) {
 		if string(runes[idx:idx+l]) != k {
 			t.Fatalf("substring %q does not match runes slice at index %d", k, idx)
 		}
+		if l > maxSubStringSeen {
+			maxSubStringSeen = l
+			maxSubString = k
+		}
+	}
+	if maxSubStringSeen != MAX_SUBSTRING_LEN {
+		t.Fatalf("expected max substring length to be %v, instead got %v. Max substring returned is: %v", MAX_SUBSTRING_LEN, maxSubStringSeen, maxSubString)
 	}
 }

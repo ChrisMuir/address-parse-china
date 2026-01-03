@@ -299,7 +299,7 @@ goos: darwin
 goarch: arm64
 pkg: github.com/ChrisMuir/address-parse-china
 cpu: Apple M1
-BenchmarkGeoLocate-8        6596            177872 ns/op
+BenchmarkGeoLocate-8        7676            152119 ns/op
 PASS
-ok      github.com/ChrisMuir/address-parse-china        2.153s
+ok      github.com/ChrisMuir/address-parse-china        2.038s
 ```
