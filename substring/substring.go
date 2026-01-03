@@ -41,7 +41,7 @@ func GetAllSubstrings(location string) map[string]int {
 	hashMap := make(map[uint64]sample, estimated)
 	collisions := make(map[string]int)
 
-	// Sliding pass per substring rune-length L
+	// the unique length values of all of the pkg data strings
 	subStringLengths := []int{2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 14}
 	for _, L := range subStringLengths {
 		for i := 0; i <= runeLen-L; i++ {

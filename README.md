@@ -15,6 +15,8 @@ For more info on geolocating Chinese strings, see [this](https://pdfs.semanticsc
 2016 paper on the subject. The geolocation function works by using both substring matching and geocodes to validate child 
 regions and infer parent regions.
 
+Support go [script](https://gist.github.com/ChrisMuir/8ff7de63077b95dfe076b58f30ecfa90) for pulling fresh data from the modood repo 
+
 ## Installation
 
 ```
