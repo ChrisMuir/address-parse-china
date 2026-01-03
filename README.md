@@ -11,11 +11,11 @@ values are returned: `Province`, `City`, `County`, `Provincial geocode`, `City g
 The package is using geo substrings and associated geocodes from [Administrative-divisions-of-China](https://github.com/modood/Administrative-divisions-of-China) 
 on GitHub, put together by user [modood](https://github.com/modood).
 
+Support go [script](https://gist.github.com/ChrisMuir/8ff7de63077b95dfe076b58f30ecfa90) for pulling fresh data from the modood repo.
+
 For more info on geolocating Chinese strings, see [this](https://pdfs.semanticscholar.org/ca9d/2d09d0a2420a7ce398e14ed43f8cd7464705.pdf) 
 2016 paper on the subject. The geolocation function works by using both substring matching and geocodes to validate child 
 regions and infer parent regions.
-
-Support go [script](https://gist.github.com/ChrisMuir/8ff7de63077b95dfe076b58f30ecfa90) for pulling fresh data from the modood repo 
 
 ## Installation
 
