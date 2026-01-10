@@ -8,7 +8,6 @@ import (
 	"github.com/ChrisMuir/address-parse-china/match"
 	"github.com/ChrisMuir/address-parse-china/models"
 	"github.com/ChrisMuir/address-parse-china/province"
-	"github.com/ChrisMuir/address-parse-china/substring"
 )
 
 // GeoLocate takes in an array of Chinese address/business strings, returns the Province, Provincial Code, City,
@@ -40,21 +39,21 @@ func getGeoLocation(location string) models.GeoLocation {
 	//     Look each province up in the location substring map
 	// else if number of provinces if greater than the number of location substrings, then:
 	//     Look each location substring up in the province map
-	subStrMap := substring.GetAllSubstrings(location)
+	// subStrMap := substring.GetAllSubstrings(location)
 
 	// Province substring match
-	matchingProvince := match.Province(subStrMap)
+	matchingProvince := match.Province(location)
 	geoInfo.Province = matchingProvince.ProvinceName
 	geoInfo.ProvinceCode = matchingProvince.ProvinceCode
 
 	// City substring match
-	matchingCities := match.Cities(subStrMap)
+	matchingCities := match.Cities(location)
 	matchingCity := filter.Cities(matchingCities, geoInfo)
 	geoInfo.City = matchingCity.CityName
 	geoInfo.CityCode = matchingCity.CityCode
 
 	// County substring match
-	matchingCounties := match.Counties(subStrMap)
+	matchingCounties := match.Counties(location)
 	matchingCounty := filter.Counties(matchingCounties, geoInfo)
 	geoInfo.County = matchingCounty.CountyName
 	geoInfo.CountyCode = matchingCounty.CountyCode

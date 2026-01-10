@@ -7,7 +7,7 @@ type County struct {
 	ProvinceCode int
 }
 
-var NameMap = makeCountyMap()
+// var NameMap = makeCountyMap()
 
 func makeCountyMap() map[string][]County {
 	countyMap := make(map[string][]County, len(Counties))

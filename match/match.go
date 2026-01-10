@@ -2,96 +2,60 @@ package match
 
 import (
 	"math"
+	"strings"
 
 	"github.com/ChrisMuir/address-parse-china/city"
 	"github.com/ChrisMuir/address-parse-china/county"
 	"github.com/ChrisMuir/address-parse-china/province"
 )
 
-func Province(subStrMap map[string]int) province.Province {
+func Province(location string) province.Province {
 	var match province.Province
 	var lowestSubStrIdx = math.MaxInt
-	if len(subStrMap) > len(province.NameMap) {
-		for currProv, currProvCode := range province.NameMap {
-			subStrIdx, ok := subStrMap[currProv]
-			if !ok {
-				continue
-			}
-			if subStrIdx < lowestSubStrIdx {
-				match.ProvinceName = currProv
-				match.ProvinceCode = currProvCode
-				lowestSubStrIdx = subStrIdx
-			}
-		}
-	} else {
-		for currSubStr, currSubStrIdx := range subStrMap {
-			provCode, ok := province.NameMap[currSubStr]
-			if !ok {
-				continue
-			}
-			if currSubStrIdx < lowestSubStrIdx {
-				match.ProvinceName = currSubStr
-				match.ProvinceCode = provCode
-				lowestSubStrIdx = currSubStrIdx
-			}
+	for _, currProv := range province.Provinces {
+		idx := strings.Index(location, currProv.ProvinceName)
+		if idx >= 0 && idx < lowestSubStrIdx {
+			match.ProvinceName = currProv.ProvinceName
+			match.ProvinceCode = currProv.ProvinceCode
+			lowestSubStrIdx = idx
 		}
 	}
 	return match
 }
 
-func Cities(subStrMap map[string]int) []city.City {
+func Cities(location string) []city.City {
 	var matches []city.City
 	var lowestSubStrIdx = math.MaxInt
-	if len(subStrMap) > len(city.NameMap) {
-		for currCitySubStr, currCities := range city.NameMap {
-			subStrIdx, ok := subStrMap[currCitySubStr]
-			if !ok {
-				continue
-			}
-			if subStrIdx < lowestSubStrIdx {
-				matches = currCities
-				lowestSubStrIdx = subStrIdx
-			}
+	var lowestCityName string
+	for _, currCity := range city.Cities {
+		idx := strings.Index(location, currCity.CityName)
+		if idx >= 0 && idx < lowestSubStrIdx {
+			matches = []city.City{currCity}
+			lowestSubStrIdx = idx
+			lowestCityName = currCity.CityName
+			continue
 		}
-	} else {
-		for currSubStr, currSubStrIdx := range subStrMap {
-			cities, ok := city.NameMap[currSubStr]
-			if !ok {
-				continue
-			}
-			if currSubStrIdx < lowestSubStrIdx {
-				matches = cities
-				lowestSubStrIdx = currSubStrIdx
-			}
+		if currCity.CityName == lowestCityName {
+			matches = append(matches, currCity)
 		}
 	}
 	return matches
 }
 
-func Counties(subStrMap map[string]int) []county.County {
+func Counties(location string) []county.County {
 	var matches []county.County
 	var lowestSubStrIdx = math.MaxInt
-	if len(subStrMap) > len(county.NameMap) {
-		for currCountySubStr, currCounties := range county.NameMap {
-			subStrIdx, ok := subStrMap[currCountySubStr]
-			if !ok {
-				continue
-			}
-			if subStrIdx < lowestSubStrIdx {
-				matches = currCounties
-				lowestSubStrIdx = subStrIdx
-			}
+	var lowestCountyName string
+	for _, currCounty := range county.Counties {
+		idx := strings.Index(location, currCounty.CountyName)
+		if idx >= 0 && idx < lowestSubStrIdx {
+			matches = []county.County{currCounty}
+			lowestSubStrIdx = idx
+			lowestCountyName = currCounty.CountyName
+			continue
 		}
-	} else {
-		for currSubStr, currSubStrIdx := range subStrMap {
-			counties, ok := county.NameMap[currSubStr]
-			if !ok {
-				continue
-			}
-			if currSubStrIdx < lowestSubStrIdx {
-				matches = counties
-				lowestSubStrIdx = currSubStrIdx
-			}
+		if currCounty.CountyName == lowestCountyName {
+			matches = append(matches, currCounty)
 		}
 	}
 	return matches

@@ -5,7 +5,7 @@ type Province struct {
 	ProvinceCode int
 }
 
-var NameMap = makeProvinceNameMap()
+// var NameMap = makeProvinceNameMap()
 var CodeMap = makeProvinceCodeMap()
 
 func makeProvinceNameMap() map[string]int {

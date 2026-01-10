@@ -6,7 +6,7 @@ type City struct {
 	ProvinceCode int
 }
 
-var NameMap = makeCityNameMap()
+// var NameMap = makeCityNameMap()
 var CodeMap = makeCityCodeMap()
 
 func makeCityNameMap() map[string][]City {
